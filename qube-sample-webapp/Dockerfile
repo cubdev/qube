@@ -16,4 +16,4 @@ EXPOSE 5000
 ENTRYPOINT python app.py
 
 # execute the flask application
-CMD flask run --host 0.0.0.0
+CMD flask run 
