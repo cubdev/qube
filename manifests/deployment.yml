@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: "qubecluster-d3b5"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: "qubecluster-d3b5"
+  template:
+    metadata:
+      labels:
+        app: "qubecluster-d3b5"
+    spec:
+      containers:
+        - name: "qubecluster-d3b5"
+          image: "qubepkgs.azurecr.io/qubecluster"
+          ports:
+          - containerPort: 80
