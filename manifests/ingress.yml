@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+    name: "qubeaks-961b"
+    labels:
+        app: "qubeaks-961b"
+    annotations:
+        kubernetes.io/ingress.class: addon-http-application-routing
+spec:
+    rules:
+        - host: qube-dev-qubeaks-961b.79d319a4b230407d8d83.eastus.aksapp.io
+          http:
+            paths:
+            - path: /
+              backend:
+                serviceName: "qubeaks-961b"
+                servicePort: 3000
