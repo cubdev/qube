@@ -16,4 +16,4 @@ EXPOSE 5000
 ENTRYPOINT python app.py
 
 # execute the flask application
-CMD flask run 
+CMD gunicorn -w 1 -b 0.0.0.0:5000 wsgi:app 
