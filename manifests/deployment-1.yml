@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: "qubecluster-10e7"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: "qubecluster-10e7"
+  template:
+    metadata:
+      labels:
+        app: "qubecluster-10e7"
+    spec:
+      containers:
+        - name: "qubecluster-10e7"
+          image: "quberepo.azurecr.io/qubecluster"
+          ports:
+          - containerPort: 5000
