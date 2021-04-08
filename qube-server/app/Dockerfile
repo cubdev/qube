@@ -1,4 +1,4 @@
-FROM gradle:5.6.2-jdk8
+FROM gradle:6.8.3-jdk11
 WORKDIR /app
 COPY . /app
 
