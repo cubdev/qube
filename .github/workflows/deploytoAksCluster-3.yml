@@ -1,0 +1,50 @@
+on: [push]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    
+    - uses: azure/docker-login@v1
+      with:
+        login-server: quberepo.azurecr.io
+        username: ${{ secrets.acr_quberepo_username }}
+        password: ${{ secrets.acr_quberepo_password }}
+    
+    - name: Build and push image to ACR
+      id: build-image
+      run: |
+        docker build "$GITHUB_WORKSPACE/qube-server/app" -f  "qube-server/app/Dockerfile" -t quberepo.azurecr.io/qubecluster:${{ github.sha }} --label dockerfile-path=qube-server/app/Dockerfile
+        docker push quberepo.azurecr.io/qubecluster:${{ github.sha }}
+    
+    - uses: azure/k8s-set-context@v1
+      with:
+         kubeconfig: ${{ secrets.aks_qubecluster_kubeConfig }}
+      id: login
+    
+    - name: Create namespace
+      run: |
+        namespacePresent=`kubectl get namespace | grep default | wc -l`
+        if [ $namespacePresent -eq 0 ]
+        then
+            echo `kubectl create namespace default`
+        fi
+
+    - uses: azure/k8s-create-secret@v1
+      with:
+        namespace: default
+        container-registry-url: quberepo.azurecr.io
+        container-registry-username: ${{ secrets.acr_quberepo_username }}
+        container-registry-password: ${{ secrets.acr_quberepo_password }}
+        secret-name: qubeclusterdockerauth
+       
+    - uses: azure/k8s-deploy@v1.2
+      with:
+        namespace: default
+        manifests: |
+          manifests/deployment-3.yml
+          manifests/service-3.yml
+        images: |
+          quberepo.azurecr.io/qubecluster:${{ github.sha }}
+        imagepullsecrets: |
+          qubeclusterdockerauth
