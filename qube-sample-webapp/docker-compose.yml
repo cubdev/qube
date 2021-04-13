@@ -1,0 +1,14 @@
+version: '3.8' # Using Docker's latest stable version
+services: # Providing the list of the services to be delpoyed as containers within the same network
+ server: # Backend Docker Conf.
+  build: . # Builds from the Dockerfile in the current directory
+  ports: 
+  - 5000:5000 # Forwards the exposed port 5000 in the container to port 5000 on host machine
+  volumes:
+  - .:/app # Mounts current dir on host to /app dir inside the container.
+  command: gunicorn -w 1 -b 0.0.0.0:5000 wsgi:app
+  links: # Linking to container name db
+  - db
+
+ db:
+  image: mongo:4
