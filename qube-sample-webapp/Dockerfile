@@ -10,10 +10,10 @@ ADD . /app
 RUN pip install -r requirements.txt
 
 # expose port 5000 for Flask app to run on
-EXPOSE 5000
+# EXPOSE 5000
 
 # set entrypoint for docker
-ENTRYPOINT python app.py
+# ENTRYPOINT python app.py
 
 # execute the flask application
-CMD flask run 
+# CMD gunicorn -w 1 -b 0.0.0.0:5000 wsgi:app 
