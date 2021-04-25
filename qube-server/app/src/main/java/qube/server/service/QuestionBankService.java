@@ -1,30 +1,39 @@
 package qube.server.service;
 
-import org.springframework.web.bind.annotation.PathVariable;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import qube.server.model.Question;
+import qube.server.repository.QuestionRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.LongStream;
-
+@Slf4j
 @RestController
 public class QuestionBankService {
 
+    @Autowired
+    private QuestionRepository questionRepository;
+
     // fetches all questions
     @RequestMapping("/questions")
-    public List<Question> getAllQuestions() {
-        List<Question> allQuestions = new ArrayList<>();
-        LongStream.range(0, 11).forEach(i -> allQuestions.add(Question.builder().id(i).course("Maths").build()));
-        return allQuestions;
+    public Page<Question> getAllQuestions() {
+        return questionRepository.findAll(PageRequest.of(0, 10));
     }
 
     // fetches questions per course
-    @RequestMapping("/questions/{course}")
-    public List<Question> getAllQuestionsForCourse(@PathVariable String course) {
-        List<Question> courseQuestions = new ArrayList<>();
-        LongStream.range(0, 11).forEach(i -> courseQuestions.add(Question.builder().id(i).course(course).build()));
-        return courseQuestions;
+    @RequestMapping(path = "/questions", params = "course")
+    public Page<Question> getAllQuestionsForCourse(@RequestParam String course) {
+        log.debug("Course queried : {}", course);
+        return questionRepository.findByCourse(course, PageRequest.of(0, 10));
+    }
+
+    // fetches questions per subject
+    @RequestMapping(path = "/questions", params = "subject")
+    public Page<Question> getAllQuestionsForSubject(@RequestParam String subject) {
+        log.debug("Subject queried : {}", subject);
+        return questionRepository.findBySubject(subject, PageRequest.of(0, 10));
     }
 }
