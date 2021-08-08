@@ -1,23 +1,27 @@
-import './App.css';
+import React from "react";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import "./App.scss";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import HomePage from "./components/Home";
+import QuestionDashboard from "./components/QuestionDashboard";
+import EditorialDashboard from "./components/EditorialDashboard";
+import AboutPage from "./components/About";
+import AdminPanel from "./components/admin";
+import NotFound from "./components/NotFound";
+
+const App = (props) => {
+    return (
+      <BrowserRouter>
+        <Switch>
+          <Route exact path={["/", "/practice"]} component={HomePage} />
+          <Route exact path="/about" component={AboutPage} />
+          <Route path="/:groupId/questions" component={QuestionDashboard} />
+          <Route path="/:groupId/editorials" component={EditorialDashboard} />
+          <Route exact path="/admin" component={AdminPanel} />
+          <Route path="*" component={NotFound} />
+        </Switch>
+      </BrowserRouter>
+    );
 }
 
 export default App;
