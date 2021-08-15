@@ -1,3 +1,5 @@
+
+# uvicorn app.gateway:app --log-config logger.ini 
 import uvicorn
 import logging.config
 import logging
@@ -24,7 +26,7 @@ async def shut_down():
 """""""""""""""""""""""""""Enabled CORS for REACT Application"""""""""""""""""""""""""""
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8000"],
+    allow_origins=["http://localhost:5000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

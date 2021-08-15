@@ -8,7 +8,7 @@ from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 from app.models.questions import Question, QuestionInDB
 import json
 
-MONGODB_URL = "0.0.0.0:27017"
+MONGODB_URL = "db"
 MIN_CONNECTIONS = 1
 MAX_CONNECTIONS = 5
 
@@ -60,7 +60,7 @@ class Database:
 
     async def get_all(self, collection):
         """Method to get all records from the collection
-        
+
         Args:
             collection (str): Name of the collection
         Returns:
