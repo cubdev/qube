@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: qube-dev
+  name: qube-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: qube-dev
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: qube-dev
+    spec:
+      containers:
+        - image: quberegistry1.azurecr.io/qube:1.0
+          name: qube
+          ports:
+            - containerPort: 8080

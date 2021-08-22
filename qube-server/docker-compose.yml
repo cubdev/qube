@@ -1,0 +1,19 @@
+version: "3.7"
+
+services:
+    qube-app:
+        image: quberegistry1.azurecr.io/qube:1.1
+        ports:
+            - 8080:8080
+        environment:
+            QUBE_JAVA_OPTS: "-Dqube.es.host=qube-db"
+        links:
+            - "db:database:qube-db"
+        depends_on:
+            - db
+    qube-db:
+        image: elasticsearch:7.6.2
+        ports:
+            - 9200:9200
+        environment:
+            discovery.type: single-node

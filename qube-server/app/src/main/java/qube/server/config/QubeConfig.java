@@ -17,9 +17,11 @@ public class QubeConfig {
 
     @Bean
     public RestHighLevelClient client() {
+        String esHostName = System.getProperty("qube.es.host", "localhost");
+        System.out.println("*******" + esHostName);
         ClientConfiguration clientConfiguration
                 = ClientConfiguration.builder()
-                .connectedTo("localhost:9200")
+                .connectedTo(esHostName + ":9200")
                 .build();
 
         return RestClients.create(clientConfiguration).rest();
