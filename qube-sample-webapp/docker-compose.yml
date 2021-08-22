@@ -1,14 +1,13 @@
-version: '3.8' # Using Docker's latest stable version
-services: # Providing the list of the services to be delpoyed as containers within the same network
- server: # Backend Docker Conf.
-  build: . # Builds from the Dockerfile in the current directory
-  ports: 
-  - 5000:5000 # Forwards the exposed port 8000 in the container to port 8000 on host machine
-  volumes:
-  - .:/app # Mounts current dir on host to /app dir inside the container.
-  command: gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.gateway:app --log-config logger.ini -b 0.0.0.0:5000
-  links: # Linking to container name db
-  - db
+version: '3'
 
- db:
-  image: mongo
+services:
+  db:
+    image: mongo
+  web_app:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    depends_on:
+      - db
+    ports:
+      - "5000:5000"
