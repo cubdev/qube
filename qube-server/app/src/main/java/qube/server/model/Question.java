@@ -1,22 +1,23 @@
 package qube.server.model;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-import java.util.List;
+import java.util.Map;
 
 @Getter
 @Builder
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @Document(indexName = "qube")
 public class Question {
     @Id
-    private Long id;
+    private String id;
     private String body;
+    private String solution;
     private String course;
     private String subject;
-    private List<Object> metadata;
+    private Map<String, Object> metadata;
 }

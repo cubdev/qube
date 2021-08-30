@@ -1,0 +1,33 @@
+input Criteria {
+    criteria: String!
+    value: String!
+}
+
+input QuestionFilter {
+    course: [Criteria],
+    subject: [Criteria],
+}
+
+input QuestionInput {
+    body: String,
+    solution: String,
+    course: String,
+    subject: String,
+}
+
+type Query {
+    questions(filter: QuestionFilter): [Question]
+}
+
+type Mutation {
+    addQuestion(input: QuestionInput): Question
+}
+
+type Question {
+    id: ID
+    body: String
+    solution: String
+    course: String
+    subject: String
+    metadata: [String]
+}
